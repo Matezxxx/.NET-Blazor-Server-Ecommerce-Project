@@ -1,0 +1,48 @@
+﻿@inherits LayoutComponentBase
+<RadzenDialog />
+<RadzenNotification />
+<RadzenContextMenu />
+<RadzenTooltip />
+
+<PageTitle>Ecommerce Project</PageTitle>
+<RadzenLayout Style="height: stretch;width: 100%;background:  white;  grid-template-columns:  auto 1fr; grid-template-areas:'rz-sidebar' 'rz-header rz-header' 'rz-body ';">
+    <RadzenHeader Style=" height:70px; background-color:#3A474D;border:none;">
+        <RadzenSidebarToggle Style="height: auto; margin:20px; border-width:10px" Click="@(() => sidebar3Expanded = !sidebar3Expanded)" />
+        <RadzenStack Orientation="Orientation.Horizontal"  JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Center" Gap="1rem" >
+            
+        </RadzenStack>
+    </RadzenHeader>
+    <RadzenSidebar Style="width:auto" @bind-Expanded="@sidebar3Expanded">
+        <RadzenPanelMenu >
+            <div class="rz-p-4">
+                <NavMenu />
+            </div>
+        </RadzenPanelMenu>
+       
+    </RadzenSidebar>
+    <RadzenBody>
+        <div class="rz-p-4" style=" width: 100%; height: 100%;">
+            @Body
+        </div>
+    </RadzenBody>
+</RadzenLayout>
+
+@code {
+    bool sidebar3Expanded = true;
+}
+
+@*<div class="page">
+    <div class="sidebar">
+        <NavMenu/>
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>*@

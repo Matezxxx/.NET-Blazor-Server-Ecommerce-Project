@@ -1,0 +1,117 @@
+﻿@using EcommerceProject.App.Data.Models.Entities
+@using EcommerceProject.App.Pages.OrderPages;
+@using EcommerceProject.App.Routes
+@using EcommerceProject.App.Pages.ProductPages
+@using System.Collections;
+@using System.Linq;
+@using Microsoft.EntityFrameworkCore;
+@using EcommerceProject.App.Data.Models.Services.Interfaces;
+@using Radzen;
+
+@inject IProductService productService
+@inject ICategoryService categoryService
+@inject IBrandService brandService
+@inject IBrandLogoService brandLogoService
+@inject IOrderService orderService
+
+
+@inject NavigationManager navMan
+<h3>@title</h3>
+<div style="padding-bottom:10px">
+<RadzenButton Click=@(args => AddUpdate()) Text="Vytvořit nový záznam" Icon="add_circle_outline" ButtonStyle="ButtonStyle.Primary" />
+</div>
+<RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                Data="@product" TItem="Product" ColumnWidth="200px" LogicalFilterOperator="LogicalFilterOperator.Or" Style="border:none;" >
+    <Columns>
+        <RadzenDataGridColumn TItem="Product" Property="ProductName" Filterable="false" Title="Název produktu" Frozen="true" Width="160px" TextAlign="TextAlign.Center" />
+        <RadzenDataGridColumn TItem="Product" Property="Description" Title="Popis" Frozen="true" Width="160px" />
+        <RadzenDataGridColumn TItem="Product" Property="Price" Title="Cena" Width="100px" />
+        <RadzenDataGridColumn TItem="Product" Property="StockQuantity" Title="Množství na skladě" Width="50px" />
+        <RadzenDataGridColumn TItem="Product" Property="Active"  Filterable="false" Title="Dostupný" Width="50px">
+                   <Template Context="data">
+                <RadzenCheckBox Value="@data.Active" ReadOnly="true" ValueChanged="@((bool newValue) => data.Active = newValue)"  />
+            </Template>
+        </RadzenDataGridColumn>
+
+        <RadzenDataGridColumn TItem="Product" Property="Category.CategoryName" Title="Kategorie" FormatString="{0:d}" Width="160px" />
+        <RadzenDataGridColumn TItem="Product" Property="Brand.BrandName" Title="Značka" FormatString="{0:d}" Width="160px" />
+        <RadzenDataGridColumn TItem="Product" Filterable="false" Width="120px">
+            <Template Context="data">
+                <RadzenButton Click="@(() => AddUpdate(data.ProductId))" Text="Upravit záznam" Icon="privacy_tip" ButtonStyle="ButtonStyle.Info" />
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Product" Filterable="false" Width="120px">
+            <Template Context="data">
+                <RadzenButton Click="@(() => DeleteProduct(data))" Text="Smazat produkt" Icon="report" ButtonStyle="ButtonStyle.Danger" />
+            </Template>
+        </RadzenDataGridColumn>
+       
+        
+       
+    </Columns>
+</RadzenDataGrid>
+
+@* <SearchBarComponent OnSearch="HandleSearchByName" Placeholder="Filtruj podle jména" />
+<SearchBarComponent OnSearch="HandleSearchByCategory" Placeholder="Filtruj podle Kategorie" />
+<SearchBarComponent OnSearch="HandleSearchByBrand" Placeholder="Filtruj podle Značky" />
+
+ <button class="btn btn-primary" @onclick="() => AddUpdate(ProductId)">Upravit produkt</button>
+
+<div class="row">
+    <div class="col-md-8">
+       
+        <br/>
+        
+        <button class="btn btn-primary" @onclick="() => AddUpdate()">Vytvoř nový záznam</button>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Název produktu</th>
+                    <th>Popis produktu</th>
+                    <th>Cena</th>
+                    <th>Množství ve skladě</th>
+                    <th>Aktivní</th>
+                    <th>Kategorie</th>
+                    <th>Značky</th>
+                    
+                </tr>
+            </thead>
+            
+            <tbody>
+               
+                @foreach(var produkt in product){
+
+                    
+                        <tr>
+                            <td>@produkt.ProductName</td>
+                            <td>@produkt.Description</td>
+                            <td>@produkt.Price</td>
+                            <td>@produkt.StockQuantity</td>
+                       
+                        <td>
+                            <div class="rz-p-12 rz-text-align-center">
+                                <RadzenCheckBox @bind-Value=@produkt.Active Name="CheckBox1" />
+                                <RadzenLabel Component="CheckBox1" Style="margin: 0px;padding: 0px; vertical-align: middle;" />
+                            </div>
+                        </td>
+                       
+                            <td>@produkt.Category.CategoryName</td>
+                            <td>@produkt.Brand.BrandName</td>
+                            <td>
+                                <button class="btn btn-primary" @onclick="() => AddUpdate(produkt.ProductId)">Upravit produkt</button>
+                           
+                            </td>
+                        <td> <button class="btn btn-primary" @onclick="()=>DeleteProduct(produkt)">Smazat produkt</button></td>
+                           
+                       
+                        </tr>}
+                
+                    
+                            </tbody>
+                        </table>
+
+                       
+                        </div>
+                        </div>*@
+
+  

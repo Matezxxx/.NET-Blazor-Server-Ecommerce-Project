@@ -1,0 +1,52 @@
+﻿@attribute [Route(Routes.ConstRoutes.AddCategory)];
+@attribute [Route(Routes.ConstRoutes.EditCategory)];
+@using EcommerceProject.App.Data.Models.Services;
+@inject ICategoryService categoryService
+@inject NavigationManager navMan
+<PageTitle>@title</PageTitle>
+
+<h3>@title</h3>
+<RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="FlexWrap.Wrap">
+    <RadzenButton Click=@(args => BackToList()) Text="Zpět na výpis" ButtonStyle="ButtonStyle.Primary" />
+</RadzenStack>
+<EditForm style="height:100%" OnValidSubmit="Save" Model="category">
+<ValidationSummary Model="@category" />
+<RadzenRow AlignItems="AlignItems.End" Gap="1rem" Class="rz-p-sm-12">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+    <RadzenColumn Size="12" SizeMD="12" SizeLG="12">
+        <RadzenFormField Text="Název kategorie" Style="width: 100%;">
+            <RadzenTextBox @bind-Value="@category.CategoryName" Style="width: 100%;" />
+                <ValidationMessage For="(() => category.CategoryName)"></ValidationMessage>
+        </RadzenFormField>
+    </RadzenColumn>
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="FlexWrap.Wrap">
+            <RadzenButton type="Submit" ButtonStyle="ButtonStyle.Success">Ulož záznam</RadzenButton>
+        </RadzenStack>
+   @* <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="FlexWrap.Wrap">
+        <RadzenButton Click=@(args => Save()) Text="Uložit záznam" ButtonStyle="ButtonStyle.Success" />
+    </RadzenStack>*@
+</RadzenRow>
+</EditForm>
+@*<button type="button" class="btn btn-primary" @onclick="Save">Uložit</button>
+<div class="row">
+    <div class="col-md-6">
+        <EditForm Model="@category" OnValidSubmit="Save">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label for="CategoryName">Název Kategorie</label>
+                <InputText class="form-control" @bind-Value="category.CategoryName" />
+                <ValidationMessage For="@(()=>category.CategoryName)" />
+            </div>
+
+
+            <div class="my-2">
+                @message
+            </div>
+
+            <div class="my-2">
+                <button type="submit" class="btn btn-primary">Ulož záznam</button>
+                <a href="category" class="btn btn-primary">Zrušit</a>
+            </div>
+        </EditForm>
+    </div>
+</div>*@

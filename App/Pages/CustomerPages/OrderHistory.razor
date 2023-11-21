@@ -1,0 +1,45 @@
+﻿@attribute [Route(EcommerceProject.App.Routes.ConstRoutes.OrderHistory)]
+@inject IProductService productService
+@inject IOrderService orderService
+@*@inject ProductOrderService productOrderService*@
+@inject ICustomerService customerService
+@using EcommerceProject.App.Data.Models.Entities
+@using EcommerceProject.App.Data.Models.Services
+@using EcommerceProject.App.Pages
+@using EcommerceProject.App.Routes
+
+
+
+
+
+
+<h3>Product Order History</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Id objednávky</th>
+            <th>Jméno produktu</th>
+            <th>Status</th>
+        </tr>
+    </thead>  
+    <tbody>
+        <tr>
+        @foreach (var order in Orders)
+        {
+        <td><h4>@order.OrderId</h4></td>
+        }
+        @foreach (var product in Products)
+                {
+                    <div>
+                        <td> @product.ProductName</td>
+                       
+                            <td>@product.Active</td>
+                        
+                    </div>
+                }
+            </tr>
+        
+
+        
+    </tbody>
+    </table>

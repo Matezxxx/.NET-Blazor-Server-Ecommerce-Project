@@ -1,0 +1,109 @@
+﻿@using EcommerceProject.App.Pages.OrderPages
+@using EcommerceProject.App.Routes
+@using System.Collections;
+@using System.Reflection;
+@using System.Linq;
+@using Microsoft.CodeAnalysis;
+@using Microsoft.EntityFrameworkCore;
+@using EcommerceProject.App.Data.Models.Services;
+@using EcommerceProject.App.Data.Models.Entities;
+@using EcommerceProject.App.Data.Models.Services.Interfaces
+
+@inject IOrderService orderService
+
+<h3>@title</h3>
+
+<RadzenDataGrid  AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                Data="@Orders" @ref="ordgrid" LoadData="LoadData" TItem="Order" ColumnWidth="200px" LogicalFilterOperator="LogicalFilterOperator.Or" Style="border-radius: 20px;">
+    <Columns>
+        <RadzenDataGridColumn TItem="Order" Property="OrderId" Title="ID objednávky" Frozen="true" Width="160px" TextAlign="TextAlign.Center" />
+        <RadzenDataGridColumn TItem="Order"  Title="Název produktu" Frozen="true" Width="160px">
+                <Template Context="data">
+                    @foreach (var product in data.Products)
+                    {
+                        <div>@product.ProductName</div>
+                    }
+                </Template>
+            </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Order" Property="Customer.CustomerName" Title="Jméno zákazníka" Frozen="true" Width="160px" />
+  
+        <RadzenDataGridColumn TItem="Order" Property="Processed" Title="Stav" Width="120px">
+            <Template Context="data">
+              
+                @GetProcessedText(data.Processed)
+                
+            </Template>
+         </RadzenDataGridColumn>
+        
+        <RadzenDataGridColumn TItem="Order" Width="120px">    
+            <Template Context="order">
+                @if (order.Processed == 1)
+                {
+                   
+                    <RadzenButton Click="@(async () => await ProcessOrderAsync(order))" Text="Zpracovat" />
+                }
+               
+            </Template>
+        </RadzenDataGridColumn>
+        
+       
+    </Columns>
+</RadzenDataGrid>
+@*<SearchBarComponent OnSearch="HandleSearchByOrderId" Placeholder="Filtruj podle čísla objednávky" />
+<SearchBarComponent OnSearch="HandleSearchByProcessed" Placeholder="Filtruj podle statusu" />
+@*<SearchBarComponent OnSearch="HandleSearchByProductName" Placeholder="Filtruj podle názvu produktu" />*@
+
+@*<div class="row">
+    <div class="col-md-6">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Číslo objednávky</th>
+                    <th>Název produktu</th>
+                    <th>Jméno zákazníka</th>
+                    <th>Stav objednávky</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+            
+                @foreach (var order in Orders)
+                {
+                        <tr>
+                            <td>@order.OrderId</td>
+                        
+                            <td>
+                             @foreach(var prod in order.Products)
+                            {
+                               <span>@prod.ProductName</span>
+                            }</td>
+                           
+                        
+                        <td>
+                          @order.Customer.CustomerName
+                        </td>
+
+                        <td>@GetProcessedText(order.Processed)</td>
+                        <td> <button class="btn btn-primary" @onclick="()=>DeleteOrder(order) ">Smazat objednávku</button></td>
+                        @if (order.Processed == 1)
+                        {
+                            <td>
+
+                                <Button @onclick="async() =>await ProcessOrderAsync(order)">Zpracovat</Button>
+                            
+                        </td>}
+                       
+                        
+                        
+                       
+                    </tr>
+                    
+                }
+
+            </tbody>
+        </table>
+
+       
+    </div>
+</div>*@

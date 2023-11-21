@@ -1,0 +1,57 @@
+﻿@using EcommerceProject.App.Data.Models.Services
+@using EcommerceProject.App.Pages.ProductPages
+@using System.Collections;
+@using System.Linq;
+@using Microsoft.EntityFrameworkCore;
+@inject ICategoryService categoryService
+@inject NavigationManager navMan
+
+<h3>@title</h3>
+<div style="padding-bottom:10px">
+    <RadzenButton Click=@(args =>AddUpdate() ) Text="Vytvořit nový záznam" Icon="add_circle_outline" ButtonStyle="ButtonStyle.Primary" />
+</div>
+
+<RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="true"  FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                Data="@categories" TItem="Category" ColumnWidth="200px" LogicalFilterOperator="LogicalFilterOperator.Or" Count="_countCategories" LoadData="LoadData" AllowColumnReorder="true" @ref="catgrid" Style="border:none">
+    <Columns>
+        <RadzenDataGridColumn TItem="Category" Property="CategoryName" Title="Název kategorie" Frozen="false" TextAlign="TextAlign.Center" />
+        <RadzenDataGridColumn TItem="Category" Filterable="false" Width="120px">
+            <Template Context="data">
+                <RadzenButton Click="@(() => AddUpdate(data.CategoryId))" Text="Upravit záznam" Icon="privacy_tip" ButtonStyle="ButtonStyle.Info" />
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Category" Filterable="false" Width="120px">
+            <Template Context="data">
+                <RadzenButton Click="@(() => DeleteCategory(data))" Text="Smazat kategorii" Icon="report" ButtonStyle="ButtonStyle.Danger" />
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+@*<SearchBarComponent OnSearch="HandleSearchByCategory" Placeholder="Filtruj podle jména kategorie" />
+<div class="row">
+    <div class="col-md-6">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Název kategorie</th>
+                   
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var category in categories)
+                {
+                    <tr>
+                        <td>@category.CategoryName</td>
+                        <td>
+                            <a href="category/edit/@category.CategoryId" class="btn btn-success">Upravit kategorii</a>
+                        </td>
+                        <td> <button class="btn btn-primary" @onclick="()=>DeleteCategory(category)">Smazat kategorii</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <a href="category/Add" class="btn btn-primary">Přidat nový záznam</a>
+    </div>
+</div>*@

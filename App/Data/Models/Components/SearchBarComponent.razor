@@ -1,0 +1,25 @@
+﻿
+<div>
+   
+    
+    <input @bind-value="filter" type="text" name="search" placeholder="@Placeholder" />
+    <button @onclick="HandleSearch">Vyhledej</button>
+   
+</div>
+
+@code {
+    private string filter;
+
+    [Parameter]
+    public string Placeholder { get; set; }
+
+   
+    
+    [Parameter]
+    public EventCallback<string>OnSearch{ get; set; }
+    private void HandleSearch()
+    {
+        OnSearch.InvokeAsync(filter);   
+    }
+   
+}

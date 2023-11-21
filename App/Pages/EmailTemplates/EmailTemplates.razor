@@ -1,0 +1,68 @@
+﻿@attribute [Route(EcommerceProject.App.Routes.ConstRoutes.EmailTemplates)];
+@using EcommerceProject.App.Data.Models.Services;
+@using EcommerceProject.App.Data.Models.Entities;
+@using EcommerceProject.App.Data.Models.Components;
+@using EcommerceProject.App.Data.Models.Services.Interfaces;
+@using EcommerceProject.App.Routes;
+@using Microsoft.EntityFrameworkCore;
+@using EcommerceProject.App.Routes
+@using EcommerceProject.App.Pages.EmailTemplates
+@using System.Collections;
+@using Radzen.Blazor;
+@using System.Linq;
+@using System.Net;
+@using System.Net.Mail;
+@inject IEmailTemplateService emailTemplateService
+@inject NavigationManager navMan
+
+<h3>Výpis Emailových Šablon</h3>
+
+
+<div style="padding-bottom:10px">
+    <RadzenButton Click=@(args => AddUpdate()) Text="Vytvořit novou šablonu" Icon="add_circle_outline" ButtonStyle="ButtonStyle.Primary" />
+</div>
+<RadzenDataGrid @ref="emGrid" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                Data="@emailTemplates" LoadData="LoadData" TItem="EmailTemplate" ColumnWidth="200px" LogicalFilterOperator="LogicalFilterOperator.Or" Style="border-radius: 20px;">
+    <Columns>
+        <RadzenDataGridColumn TItem="EmailTemplate" Property="Name" Filterable="false" Title="Název šablony" Frozen="true" Width="50px" TextAlign="TextAlign.Center" />
+        <RadzenDataGridColumn TItem="EmailTemplate" Property="Code" Title="Code" Frozen="true" Width="50px" />
+        <RadzenDataGridColumn TItem="EmailTemplate" Property="Subject" Title="Předmět" Width="50px" />
+        <RadzenDataGridColumn TItem="EmailTemplate" Property="Body" Title="Obsah" Width="130px" />
+        <RadzenDataGridColumn TItem="EmailTemplate" Filterable="false" Width="120px" TextAlign="TextAlign.Center">
+            <Template Context="data">
+                <RadzenButton Click="@(() => AddUpdate(data.Code))" Text="Editovat šablonu" Icon="privacy_tip" ButtonStyle="ButtonStyle.Info" />
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="EmailTemplate" Filterable="false" Width="120px" TextAlign="TextAlign.Center">
+            <Template Context="data">
+                <RadzenButton Click="@(async() =>await DeleteEmailTemplate(data))" Text="Smazat šablonu" Icon="report" ButtonStyle="ButtonStyle.Danger" />
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+@*<table class="table">
+    <thead>
+        <tr>
+        
+            <th>Název</th>
+            <th>Předmět</th>
+            <th>Obsah</th>
+            <th>Akce</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var template in emailTemplates)
+        {
+            <tr>
+             
+                <td>@template.Name</td>
+                <td>@template.Subject</td>
+                <td>@template.Body</td>
+                <td>
+                    <button @onclick="() => AddUpdate(template.Code)">Editovat</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>*@
+

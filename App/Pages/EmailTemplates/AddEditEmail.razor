@@ -1,0 +1,46 @@
+﻿@attribute [Route(EcommerceProject.App.Routes.ConstRoutes.EditEmailTemplates)];
+@attribute [Route(EcommerceProject.App.Routes.ConstRoutes.AddEmailTemplates)];
+@using Microsoft.EntityFrameworkCore;
+@using EcommerceProject.App.Data.Models.Services.Interfaces
+@using EcommerceProject.App.Data.Models.Components;
+@inject ApplicationContext dbContext
+@inject IEmailTemplateService emailTemplateService
+@inject DialogService ds
+@inject NavigationManager navMan
+
+<h3>Editace Emailové Šablony</h3>
+
+<RadzenButton Click=@(args => BackToList()) Text="Zpět na výpis šablon" ButtonStyle="ButtonStyle.Primary" />
+    <EditForm style="height:100%" OnValidSubmit="SaveTemplate" Model="template">
+    <ValidationSummary Model="@template" />
+    <RadzenRow AlignItems="AlignItems.End"  Gap="1rem" Class="rz-p-sm-12">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <RadzenColumn Size="12" SizeMD="12" SizeLG="12">
+                <RadzenFormField Text="Název šablony" Style="width: 100%;">
+                    <RadzenTextBox @bind-Value="@template.Name" Style="width: 100%;" />
+                <ValidationMessage For="(() => template.Name)"></ValidationMessage>
+                </RadzenFormField>
+                <RadzenFormField Text="Code" Style="width: 100%;">
+                    <RadzenTextBox @bind-Value="@template.Code" Style="width: 100%;" />
+                <ValidationMessage For="(() => template.Code)"></ValidationMessage>
+                </RadzenFormField>
+                <RadzenFormField Text="Přemět šablony" Style="width: 100%;">
+                    <RadzenTextBox @bind-Value="@template.Subject" Style="width: 100%;" />
+                <ValidationMessage For="(() => template.Subject)"></ValidationMessage>
+                </RadzenFormField>
+            <div>
+                <label for="editor">Obsah</label>
+                <RadzenHtmlEditor @bind-Value=@template.Body style="height: 300px;" Input=@OnInput Change=@OnChange Paste=@OnPaste Execute=@OnExecute UploadUrl="upload/image" />
+            </div>
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="FlexWrap.Wrap">
+                <RadzenButton type="Submit" ButtonStyle="ButtonStyle.Success">Ulož záznam</RadzenButton>
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+    </EditForm>
+<RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="FlexWrap.Wrap">
+    <RadzenButton Click=@(args => SaveTemplate()) Text="Uložit záznam" ButtonStyle="ButtonStyle.Success" />
+</RadzenStack>
+      
+<ConsoleLog @ref=@console />
+

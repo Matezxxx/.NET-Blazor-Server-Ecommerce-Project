@@ -1,0 +1,232 @@
+﻿@attribute [Route(Routes.ConstRoutes.AddCustomer)];
+@attribute [Route(Routes.ConstRoutes.EditCustomer)];
+@using EcommerceProject.App.Data.Models.Services;
+@using EcommerceProject.App.Data.Models.Entities;
+@using EcommerceProject.App.Data.Models.Components;
+@using EcommerceProject.App.Data.Models.Services.Interfaces;
+@using EcommerceProject.App.Routes;
+@using Microsoft.EntityFrameworkCore;
+@inject ICustomerService customerService
+@inject IOrderService orderService
+@inject NavigationManager navMan
+@inject DialogService ds
+
+<PageTitle>@title</PageTitle>
+<RadzenButton Click=@(args => BackToList()) Text="Zpět na výpis zákazníků" ButtonStyle="ButtonStyle.Primary" />
+
+<RadzenTabs @bind-SelectedIndex=@selectedTab>
+    <Tabs>
+       <RadzenTabsItem Text="Editace zákazníka">
+           <EditForm style="height:100%" OnValidSubmit="Save" Model="customer">
+    <ValidationSummary Model="@customer" />
+            <RadzenRow AlignItems="AlignItems.End" Wrap="FlexWrap.Wrap" Gap="1rem" Class="rz-p-sm-12">
+                    <DataAnnotationsValidator></DataAnnotationsValidator>
+                <RadzenColumn Size="12" SizeMD="6" SizeLG="3">
+                    @if (CustomerId == 0)
+                    {
+                        <RadzenFormField Text="Zde zadejte jméno zákazníka" Style="width: 100%;">
+                            <RadzenTextBox @bind-Value="@customer.CustomerName" Style="width: 100%;" />
+                                <ValidationMessage For="(() => customer.CustomerName)"></ValidationMessage>
+                        </RadzenFormField>
+                        <RadzenFormField Text="Zde zadejte email zákazníka" Style="width: 100%;">
+                            <RadzenTextBox @bind-Value="@customer.CustomerEmail" Style="width: 100%;" />
+                                <ValidationMessage For="(() => customer.CustomerEmail)"></ValidationMessage>
+                        </RadzenFormField>
+                        <RadzenFormField Text="Zde zadejte telefon zákazníka" Style="width: 100%;">
+                            <RadzenTextBox @bind-Value="@customer.CustomerPhone" Style="width: 100%;" />
+                                <ValidationMessage For="(() =>customer.CustomerPhone)"></ValidationMessage>
+                        </RadzenFormField>
+                    }
+                    else
+                    {  
+                        <RadzenFormField Text="Jméno zákazníka" Style="width: 100%;">
+                            <RadzenTextBox @bind-Value="@customer.CustomerName" Style="width: 100%;" />
+                                <ValidationMessage For="(() => customer.CustomerName)"></ValidationMessage>
+                        </RadzenFormField>
+                        <RadzenFormField Text="Email zákazníka" Style="width: 100%;">
+                            <RadzenTextBox @bind-Value="@customer.CustomerEmail" Style="width: 100%;" />
+                                <ValidationMessage For="(() => customer.CustomerEmail)"></ValidationMessage>
+                        </RadzenFormField>
+                        <RadzenFormField Text="Telefon zákazníka" Style="width: 100%;">
+                            <RadzenTextBox @bind-Value="@customer.CustomerPhone" Style="width: 100%;" />
+                                <ValidationMessage For="(() =>customer.CustomerPhone)"></ValidationMessage>
+                        </RadzenFormField>
+                    }
+                        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="FlexWrap.Wrap">
+                            <RadzenButton type="Submit" ButtonStyle="ButtonStyle.Success">Ulož záznam</RadzenButton>
+                            <RadzenButton Click=@(args => BackToList()) Text="Zrušit přidávání zákazníka" ButtonStyle="ButtonStyle.Danger" />
+                        </RadzenStack>
+
+                </RadzenColumn>
+            </RadzenRow>
+            </EditForm>
+       
+            
+        </RadzenTabsItem>
+    
+        @if (CustomerId != 0)
+        {
+            <RadzenTabsItem Text="Přehled objednávek zákazníka">
+
+                @if (CustomerId != 0)
+                {
+                    <RadzenGrid Data="@customer.Orders" TItem="Order">
+                        <Columns>
+                            <RadzenGridColumn TItem="Order" Property="OrderId" Title="ID objednávky">
+                                <Template Context="order">
+                                    @if (order.OrderId != 0)
+                                    {
+                                        <strong><em>@order.OrderId</em></strong>
+                                    }
+                                </Template>
+                            </RadzenGridColumn>
+                            <RadzenGridColumn TItem="Order" Property="Products" Title="Produkty">
+                                <Template Context="order">
+                                    @if (order.Products != null && order.Products.Any())
+                                    {
+                                        <ul>
+                                            @foreach (var product in order.Products)
+                                            {
+                                                <li>@product.ProductName</li>
+                                             
+                                            }
+                                        </ul>
+                                    }
+                                </Template>
+                            </RadzenGridColumn>
+                            <RadzenGridColumn TItem="Product" Property="Active" Title="Stav">
+                                <Template Context="order">
+                                    @if (Products != null && Products.Any())
+                                    {
+                                        
+                                            @foreach (var product in Products)
+                                            {
+                                                @product.Active
+                                            }
+                                        
+                                    }
+                                </Template>
+                            </RadzenGridColumn>
+                        </Columns>
+                    </RadzenGrid>
+                }
+            </RadzenTabsItem>
+            }
+    </Tabs>
+</RadzenTabs>
+           @* <div class="row">
+                <div class="col-md-6">
+                    <EditForm Model="@customer" OnValidSubmit="Save">
+
+                        <DataAnnotationsValidator />
+                        <div class="form-group">
+                            <label for="CustomerName">Název Zákazníka</label>
+                            <InputText class="form-control" @bind-Value="customer.CustomerName" />
+                            <ValidationMessage For="@(()=>customer.CustomerName)" />
+                        </div>
+                        <div class="form-group">
+                            <label for="CustomerEmail">Email Zákazníka</label>
+                            <InputText class="form-control" @bind-Value="customer.CustomerEmail" />
+                            <ValidationMessage For="@(()=>customer.CustomerEmail)" />
+                        </div>
+                        <div class="form-group">
+                            <label for="CustomerPhone">Telefon Zákazníka</label>
+                            <InputText class="form-control" @bind-Value="customer.CustomerPhone" />
+                            <ValidationMessage For="@(()=>customer.CustomerPhone)" />
+                        </div>
+                        <div class="my-2">
+                            <p>@message</p>
+                        </div>
+                        <div class="my-2">
+                            <RadzenButton type="submit" class="btn btn-primary">Ulož záznam</RadzenButton>
+                            <a href="customer" class="btn btn-primary">Zrušit</a>
+
+                        </div>
+                    </EditForm>
+                </div>
+
+            </div>
+
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="Přehled objednávek">
+
+            @if (CustomerId != 0)
+            {<table>
+                    <tbody>
+            @foreach (var order in customer.Orders)
+                        {
+                            @if (order.OrderId != 0)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>ID:</strong> <em>@order.OrderId</em>
+                                    </td>
+                                </tr>
+                                @foreach (var product in order.Products)
+                                {
+                                    <tr>
+
+                                        <td><strong>Název produktu:</strong> <em>@product.ProductName</em></td>
+
+                                    </tr>
+                                }
+
+                            }
+                            @if(order.OrderId==0){
+                            <p>Tento zákazník nemá žádnou objednávku</p>
+                            }
+                        }
+                    </tbody>
+                </table>
+            }
+        </RadzenTabsItem>
+    </Tabs>
+</RadzenTabs>*@
+
+
+@*<a href="/customer" class="btn btn-outline-dark">Výpis Zákazníků</a>
+<div class="row">
+    <div class="col-md-6">
+         <EditForm Model="@customer" OnValidSubmit="Save">
+        <div class="my-2">
+            <RadzenButton type="submit" class="btn btn-primary">Ulož záznam</RadzenButton>
+            <a href="customer" class="btn btn-primary">Zrušit</a>
+                
+        </div>
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label for="CustomerName">Název Zákazníka</label>
+                <InputText class="form-control" @bind-Value="customer.CustomerName" />
+                <ValidationMessage For="@(()=>customer.CustomerName)" />
+            </div>
+            <div class="form-group">
+                <label for="CustomerEmail">Email Zákazníka</label>
+                <InputText class="form-control" @bind-Value="customer.CustomerEmail" />
+                <ValidationMessage For="@(()=>customer.CustomerEmail)" />
+            </div>
+            <div class="form-group">
+                <label for="CustomerPhone">Telefon Zákazníka</label>
+                <InputText class="form-control" @bind-Value="customer.CustomerPhone" />
+                <ValidationMessage For="@(()=>customer.CustomerPhone)" />
+            </div>
+            <div class="my-2">
+                @message
+            </div>
+        </EditForm>
+        @if (CustomerId != 0)
+        {
+            <h3>Objednávky a produkty zákazníka:</h3>
+            @foreach (var order in customer.Orders)
+            {
+                <div>
+                    <h4>Objednávka ID: @order.OrderId</h4>
+                    @foreach (var product in order.Products)
+                    {
+                        <p>Produkt: @product.ProductName</p>
+                    }
+                </div>
+            }
+        }
+    </div>
+   
+</div>*@

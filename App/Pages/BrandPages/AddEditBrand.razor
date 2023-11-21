@@ -1,0 +1,85 @@
+﻿@attribute [Route(Routes.ConstRoutes.AddBrand)];
+@attribute [Route(Routes.ConstRoutes.EditBrand)];
+@using EcommerceProject.App.Data.Models.Services;
+@using EcommerceProject.App.Data.Models.Services.Interfaces;
+@inject IBrandService brandService
+@inject NavigationManager navMan
+@inject IBrandLogoService brandLogoService
+@using Radzen.Blazor;
+@using Radzen;
+
+<PageTitle>@title</PageTitle>
+
+<h3>@title</h3>
+<RadzenButton Click=@(args => Cancel()) Text="Zpět na výpis značek" ButtonStyle="ButtonStyle.Primary" />
+    <EditForm style="height:100%" OnValidSubmit="Save" Model="brand">
+    <ValidationSummary Model="@brand" />
+<RadzenRow AlignItems="AlignItems.End" Wrap="FlexWrap.Wrap" Gap="1rem" Class="rz-p-sm-12">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+    <RadzenColumn Size="12" SizeMD="6" SizeLG="3">
+        @if (BrandId == 0)
+        {
+            <RadzenFormField Text="Zde zadejte název značky" Style="width: 100%;">
+                <RadzenTextBox @bind-Value="@brand.BrandName" Style="width: 100%;" />
+                    <ValidationMessage For="(() => brand.BrandName)"></ValidationMessage>
+            </RadzenFormField>
+        }
+        else
+        {
+            <RadzenFormField Text="Název značky" Style="width: 100%;">
+                <RadzenTextBox @bind-Value="@brand.BrandName" Style="width: 100%;" />
+                    <ValidationMessage For="(() => brand.BrandName)"></ValidationMessage>
+            </RadzenFormField>
+        }
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="FlexWrap.Wrap">
+            
+                
+                    <div class="form-group">
+                        <label for="BrandLogo">Logo značky</label>
+                        <InputFile OnChange="HandleFileSelected" accept=".png" />
+                    </div>
+                <RadzenButton type="Submit" ButtonStyle="ButtonStyle.Success">Ulož záznam</RadzenButton>
+                <RadzenButton Click=@(args => Cancel()) Text="Zrušit přidávání značky" ButtonStyle="ButtonStyle.Danger" />
+                @*<RadzenButton Click=@(args => Save()) Text="Uložit záznam" ButtonStyle="ButtonStyle.Success" />*@
+                
+        
+            </RadzenStack>
+          
+    </RadzenColumn>
+</RadzenRow>
+  
+</EditForm>
+
+
+
+
+
+@*<a href="/brand" class="btn btn-outline-dark">Výpis značek</a>
+<div class="row">
+    <div class="col-md-6">
+        
+        <EditForm Model="@brand" OnValidSubmit="Save">
+            <div class="my-2">
+                <button type="submit" class="btn btn-primary">Ulož záznam</button>
+                <a href="brand" class="btn btn-primary">Zrušit</a>
+            </div>
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label for="BrandName">Název značky</label>
+                <InputText class="form-control" @bind-Value="brand.BrandName" />
+                <ValidationMessage For="@(()=>brand.BrandName)" />
+            </div>
+            <div class="form-group">
+                <label for="BrandLogo">Logo značky</label>
+                <InputFile OnChange="HandleFileSelected" accept=".png" />
+            </div>
+
+
+            <div class="my-2">
+                @message
+            </div>
+
+            
+        </EditForm>
+    </div>
+</div>*@

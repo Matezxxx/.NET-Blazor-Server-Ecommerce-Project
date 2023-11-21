@@ -1,0 +1,46 @@
+﻿@page "/Counter/{NewCount:int?}"
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @CurrentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button class="btn btn-primary" @onclick="Reset">Reset</button>
+
+@code {
+    /* order variables based on private, public, parameters, injections...etc.
+     * 
+     private variables
+     public variables
+     parameters
+     injections,
+     methods
+    */
+    public int CurrentCount; /* int is always initialized unless nullable. Public variables should start with capital letters. */
+    [Parameter]
+    public int? NewCount { get; set; }
+    
+
+
+    public void IncrementCount()
+    {   
+        if (NewCount.HasValue)
+        {
+            CurrentCount += NewCount.Value;
+
+        }
+        else
+        {
+            CurrentCount += 1;
+            CurrentCount++;
+        }
+    }
+    public void Reset()
+    {
+      
+        CurrentCount = 0;
+        
+    }
+}

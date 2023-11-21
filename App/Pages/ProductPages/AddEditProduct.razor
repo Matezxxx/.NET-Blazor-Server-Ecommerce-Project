@@ -1,0 +1,158 @@
+﻿@attribute [Route(EcommerceProject.App.Routes.ConstRoutes.AddProduct)];
+@attribute [Route(EcommerceProject.App.Routes.ConstRoutes.EditProduct)];
+@using EcommerceProject.App.Data.Models.Entities;
+@using Microsoft.EntityFrameworkCore;
+@using EcommerceProject.App.Data.Models.Services.Interfaces;
+@using EcommerceProject.App.Routes;
+@inject NavigationManager navMan
+@inject IProductService productService
+@inject ICategoryService categoryService
+@inject IBrandService brandService
+@inject IOrderService orderService
+@inject DialogService ds
+<PageTitle>@title</PageTitle>
+
+<h3>@title</h3>
+
+
+<a href="/product" class="btn btn-outline-dark">Výpis produktů</a>
+<EditForm style="height:100%" OnValidSubmit="Save" Model="product">
+    <ValidationSummary Model="@product" />
+<RadzenRow AlignItems="AlignItems.End" Wrap="FlexWrap.Wrap" Gap="1rem" Class="rz-p-sm-12">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+    <RadzenColumn Size="12" SizeMD="6" SizeLG="3">
+          
+        @if (ProductId == 0)
+            {  
+            <RadzenFormField Text="Zde zadejte název produktu" Style="width: 100%;">
+                <RadzenTextBox @bind-Value="@product.ProductName" Style="width: 100%;" />
+                    <ValidationMessage For="(() => product.ProductName)"></ValidationMessage>
+            </RadzenFormField> 
+            <RadzenFormField Text="Zde zadejte popis produktu" Style="width: 100%;">
+                <RadzenTextBox @bind-Value="@product.Description" Style="width: 100%;" /> 
+            </RadzenFormField>
+            <RadzenFormField Text="Zde zadejte cenu produktu" Style="width: 100%;">
+                    <RadzenNumeric ShowUpDown="false" @bind-Value="@product.Price" Style="width: 100%;" />
+                    <ValidationMessage For="(() => product.Price)"></ValidationMessage>
+            </RadzenFormField>
+        
+                <div class="rz-p-24 rz-text-align-center">
+                    <RadzenCheckBox ReadOnly=false @bind-Value=@product.Active Name="CheckBox51" />
+                    <RadzenLabel Text="Vyberte, zda je produkt aktivní" Component="CheckBox51" Style="margin-left: 0px; vertical-align: middle;" />
+                </div>
+            <RadzenFormField>
+                <div class="form-group">
+                    <label for="CategoryName">Název kategorie</label>
+                    <RadzenDropDown @bind-Value="product.CategoryId" Data="@categories" TextProperty="CategoryName" ValueProperty="CategoryId" Style="width: 100%;" />
+                  
+                </div>
+            </RadzenFormField>
+            <RadzenFormField>
+                <div class="form-group">
+                    <label for="BrandName">Název značky</label>
+                    <RadzenDropDown @bind-Value="product.BrandId" Data="@brands" TextProperty="BrandName" ValueProperty="BrandId" Style="width: 100%;" />
+                </div>
+            </RadzenFormField>
+
+       
+        }
+        else
+        {
+            <RadzenFormField Text="Název produktu" Style="width: 100%;">
+                <RadzenTextBox @bind-Value="@product.ProductName" Style="width: 100%;" />
+                    <ValidationMessage For="(() => product.ProductName)"></ValidationMessage>
+            </RadzenFormField>
+            <RadzenFormField Text="Popis produktu" Style="width: 100%;">
+                <RadzenTextBox @bind-Value="@product.Description" Style="width: 100%;" />
+            </RadzenFormField>
+            <RadzenFormField Text="Cena produktu" Style="width: 100%;">
+                <RadzenNumeric @bind-Value="@product.Price" Style="width: 100%;" />
+                <ValidationMessage For="(() => product.Price)"></ValidationMessage>
+            </RadzenFormField>
+            <RadzenFormField Text="Aktivní" Style="width: 100%;">
+                <div class="rz-p-24 rz-text-align-center">
+                <RadzenCheckBox ReadOnly=false @bind-Value=@product.Active Name="CheckBox51" />
+                <RadzenLabel  Component="CheckBox51" Style="margin-left: 8px; align-content: middle;padding: 1px;" />
+                </div>
+            </RadzenFormField>
+             <RadzenFormField>
+                <div class="form-group">
+                    <label for="CategoryName">Název kategorie</label>
+                    <RadzenDropDown @bind-Value="product.CategoryId" Data="@categories" TextProperty="CategoryName" ValueProperty="CategoryId" Style="width: 100%;" />
+                </div>
+            </RadzenFormField>
+            <RadzenFormField>
+                <div class="form-group">
+                    <label for="BrandName">Název značky</label>
+                    <RadzenDropDown @bind-Value="product.BrandId" Data="@brands" TextProperty="BrandName" ValueProperty="BrandId" Style="width: 100%;" />
+                </div>
+            </RadzenFormField>
+
+        }
+
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="FlexWrap.Wrap" Style="padding-top:10px">
+                <RadzenButton type="Submit" ButtonStyle="ButtonStyle.Success" >Ulož záznam</RadzenButton>
+            </RadzenStack>
+    </RadzenColumn>
+</RadzenRow>
+</EditForm>
+
+
+<ConsoleLog @ref=@console />
+
+@*<div class="row">
+    <div class="col-md-6">
+        <EditForm Model="@product" OnValidSubmit="Save">
+            <div class="my-2">
+                <RadzenButton type="submit" class="btn btn-primary">Ulož záznam</RadzenButton>
+                <a href="product" class="btn btn-primary">Zrušit</a>
+            </div>
+            <DataAnnotationsValidator/>
+            <div class="form-group">
+                <label for="ProductName">Název Produktu</label>
+                <InputText class="form-control" @bind-Value="product.ProductName"/>
+                <ValidationMessage For="@(()=>product.ProductName)"/>
+            </div>
+
+            <div class="form-group">
+                <label for="Description">Popis</label>
+                <InputText class="form-control" @bind-Value="product.Description" />
+                <ValidationMessage For="@(()=>product.Description)" />
+            </div>
+
+            <div class="form-group">
+                <label for="Price">Cena</label>
+                <InputNumber class="form-control" @bind-Value="product.Price" />
+                <ValidationMessage For="@(()=>product.Price)" />
+            </div>
+            <div>
+                <label for="activeCheckbox">Aktivní (Ano/Ne)</label>
+                <input type="checkbox" id="activeCheckbox" @bind="Active" />
+                <ValidationMessage For="@(()=>Active)" />
+            </div>
+            <div class="form-group">
+                <label for="CategoryName">Název kategorie</label>
+                <InputSelect id="Category" @bind-Value="product.CategoryId">
+                    @foreach (var category in categoryService.GetAll())
+                    {
+                        <option value="@category.CategoryId">@category.CategoryName</option>
+                    }
+                </InputSelect>
+            </div>
+            <div class="form-group">
+                <label for="BrandName">Název značky</label>
+                <InputSelect id="Brand" @bind-Value="product.BrandId">
+                    @foreach (var brand in brandService.GetAll())
+                    {
+                        <option value="@brand.BrandId">@brand.BrandName</option>
+                    }
+                </InputSelect>
+            </div>
+            <div class="my-2">
+                @message
+            </div>
+
+                 
+        </EditForm>
+    </div>
+</div>*@

@@ -1,0 +1,68 @@
+﻿@using EcommerceProject.App.Data.Models.Entities
+@using EcommerceProject.App.Routes
+@using EcommerceProject.App.Pages.CustomerPages
+@using System.Collections;
+@using System.Linq;
+@using Microsoft.EntityFrameworkCore;
+@using EcommerceProject.App.Data.Models.Services
+@inject ICustomerService customerService
+@inject IOrderService orderService
+@inject NavigationManager navMan
+<h3>@title</h3>
+<div style="padding-bottom:10px">
+    <RadzenButton Click=@(args =>AddUpdate() ) Text="Vytvořit nový záznam" Icon="add_circle_outline" ButtonStyle="ButtonStyle.Primary" />
+</div>
+<RadzenDataGrid  @ref="custgrid" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                Data="@customers" LoadData="LoadData" TItem="Customer" ColumnWidth="200px" LogicalFilterOperator="LogicalFilterOperator.Or" Style="border-radius: 20px;">
+    <Columns>
+        <RadzenDataGridColumn TItem="Customer" Property="CustomerName" Title="Jméno zákazníka" Frozen="true" Width="160px" TextAlign="TextAlign.Center" />
+        <RadzenDataGridColumn TItem="Customer" Property="CustomerEmail" Title="Email zákazníka" Frozen="true" Width="160px" />
+        <RadzenDataGridColumn TItem="Customer" Property="CustomerPhone" Title="Telefon zákazníka" Frozen="true" Width="160px" />
+        <RadzenDataGridColumn TItem="Customer" Filterable="false" Width="120px" TextAlign="TextAlign.Center">
+            <Template Context="data">
+                <RadzenButton Click="@(() => AddUpdate(data.CustomerId))" Text="Upravit záznam"  Icon="privacy_tip" ButtonStyle="ButtonStyle.Info" />
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Customer" Filterable="false" Width="120px" TextAlign="TextAlign.Center">
+            <Template Context="data">
+                <RadzenButton Click="@(async() =>await DeleteCustomer(data))" Text="Smazat zákazníka" Icon="report" ButtonStyle="ButtonStyle.Danger" />
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+
+@*<SearchBarComponent OnSearch="HandleSearchByName" Placeholder="Filtruj podle statusu" />
+<div class="row">
+    <div class="col-md-8">
+        <br/>
+        <button class="btn btn-primary" @onclick="() => AddUpdate()">Vytvoř nový záznam</button>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Jméno zákazníka</th>
+                    <th>Email</th>
+                    <th>Telefon</th>
+                    
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var customer in customers)
+                {
+                    <tr>
+                        <td>@customer.CustomerName</td>
+                        <td>@customer.CustomerEmail</td>
+                        <td>@customer.CustomerPhone</td>
+                        <td>
+                            <button class="btn btn-primary" @onclick="() => AddUpdate(customer.CustomerId)">Upravit zákazníka</button>
+                        </td>
+                        <td> <button class="btn btn-primary" @onclick="()=>DeleteCustomer(customer)">Smazat zákazníka</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <button class="btn btn-primary" @onclick="() => AddUpdate()">Vytvoř nový záznam</button>
+    </div>
+</div>*@
+

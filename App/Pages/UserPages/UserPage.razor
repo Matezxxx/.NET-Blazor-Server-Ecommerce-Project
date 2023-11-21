@@ -1,0 +1,46 @@
+﻿@using EcommerceProject.App.Data.Models.Services.Interfaces;
+@using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+@using EcommerceProject.App.Data.Models.Entities;
+@using EcommerceProject.App.Data.Models.Services;
+@using EcommerceProject.App.Routes;
+@using EcommerceProject.App.Data.Models.Seed
+@using Microsoft.AspNetCore.Identity
+@using System.Collections;
+@using System.Linq;
+@using Microsoft.EntityFrameworkCore;
+@using Radzen;
+@inject ApplicationContext apCont
+@attribute [Route(Routes.ConstRoutes.UserIndex)];
+@inject UserManager<User> userManager;
+@inject RoleManager<Role> roleManager;
+
+<h3>Uživatelé</h3>
+
+<RadzenGrid TItem="User" Data="@users" PageSize="10" Style="border-radius: 20px;">
+    <Columns>
+        <RadzenGridColumn TItem="User" Property="Id" Title="Id uživatele" />
+        <RadzenGridColumn TItem="User" Property="UserName" Title="Jméno uživatele" />
+    </Columns>
+</RadzenGrid>
+
+@*<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>UserName</th>
+            <th>Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in users)
+        {
+        
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.UserName</td>
+            </tr>
+        }
+    </tbody>
+</table>*@
+
+

@@ -1,0 +1,99 @@
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">Ecommerce Project</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon ; "></span>
+        </button>
+    </div>
+</div>
+    <RadzenPanelMenu >
+    <RadzenPanelMenuItem Text="Produkty" Path="product" Icon="account_balance_wallet"></RadzenPanelMenuItem>
+    <RadzenPanelMenuItem Text="Kategorie" Path="category" Icon="label"></RadzenPanelMenuItem>
+    <RadzenPanelMenuItem Text="Značky" Path="brand" Icon="dashboard"></RadzenPanelMenuItem>
+    <RadzenPanelMenuItem Text="Zákazníci" Path="customer" Icon="accessibility"></RadzenPanelMenuItem>
+    <RadzenPanelMenuItem Text="Objednávky" Path="order" Icon="card_giftcard"></RadzenPanelMenuItem>
+    <RadzenPanelMenuItem Text="Uživatelé" Path="user" Icon="face"></RadzenPanelMenuItem>
+    <RadzenPanelMenuItem Text="Nastavení" Icon="build">
+        <RadzenPanelMenuItem Text="Emailové šablony" Path="emailTemplate" Icon="dns"></RadzenPanelMenuItem>
+    </RadzenPanelMenuItem>
+    </RadzenPanelMenu>
+
+
+
+
+
+
+
+
+
+
+
+
+@*<RadzenAccordion>
+
+    <Items>
+
+        <RadzenAccordionItem Text="Produkty" Icon="account_balance_wallet">
+
+            <NavLink class="nav-link" href="product">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Produkty
+            </NavLink>
+
+        </RadzenAccordionItem>
+
+        <RadzenAccordionItem Text="Kategorie" Icon="label">
+            <NavLink class="nav-link" href="category">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Kategorie
+
+            </NavLink>
+        </RadzenAccordionItem>
+        <RadzenAccordionItem Text="Značky" Icon="dashboard">
+
+            <NavLink class="nav-link" href="brand">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Značky
+
+            </NavLink>
+        </RadzenAccordionItem>
+        <RadzenAccordionItem Text="Zákazníci" Icon="accessibility">
+            <NavLink class="nav-link" href="customer">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Zákazníci
+            </NavLink>
+
+        </RadzenAccordionItem>
+        <RadzenAccordionItem Text="Objednávky" Icon="card_giftcard">
+            <NavLink class="nav-link" href="order">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Objednávky
+
+            </NavLink>
+        </RadzenAccordionItem>
+        <RadzenAccordionItem Text="Nastavení" Icon="build">
+            <NavLink class="nav-link" href="orderHistory">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Uživatelé
+
+            </NavLink>
+        </RadzenAccordionItem>
+        <RadzenAccordionItem Text="Nastavení" Icon="build">
+            <NavLink class="nav-link" href="emailTemplate">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Emailové šablony
+
+            </NavLink>
+        </RadzenAccordionItem>
+
+    </Items>
+
+</RadzenAccordion>
+*@
+
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+ 
+
+}

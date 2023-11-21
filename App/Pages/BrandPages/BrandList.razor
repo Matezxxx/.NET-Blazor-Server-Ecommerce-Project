@@ -1,0 +1,92 @@
+﻿@using Radzen.Blazor;
+@using EcommerceProject.App.Pages.BrandPages
+@using System.Collections;
+@using System.Linq;
+@using Microsoft.EntityFrameworkCore;
+@using EcommerceProject.App.Data.Models.Services;
+@using EcommerceProject.App.Data.Models.Entities;
+@using EcommerceProject.App.Data.Models.Services.Interfaces;
+@inject IBrandService brandService
+@inject IBrandLogoService brandLogoService
+@inject NavigationManager navMan
+<h3><em>@title</em></h3>
+<div style="padding-bottom:10px">
+    <RadzenButton Click=@(args =>AddUpdate() ) Text="Vytvořit nový záznam" Icon="add_circle_outline" ButtonStyle="ButtonStyle.Primary" />
+</div>
+<RadzenDataGrid @ref="brandGrid" AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="true" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                Data="@brand" LoadData="LoadData" TItem="Brand" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" Style="border-radius: 20px;">
+    <Columns>
+        <RadzenDataGridColumn TItem="Brand" Property="BrandName"  Title="Název značky" Frozen="true" Width="160px" TextAlign="TextAlign.Center" />
+        <RadzenDataGridColumn TItem="Brand" Title="Logo" Filterable="false" Width="100px">
+            <Template Context="brand">
+                @if (brand.BrandLogo != null)
+                {
+                    <img src="data:@($"image/png;base64,{Convert.ToBase64String(brand.BrandLogo.Size)}")" alt="Logo" width="50" height="50" />
+                }
+                else
+                {
+                    <div>Logo není přiřazeno</div>
+                }
+            </Template>
+        </RadzenDataGridColumn>
+          <RadzenDataGridColumn TItem="Brand" Filterable="false" Width="120px">
+            <Template Context="data">
+                <RadzenButton Click="@(() => AddUpdate(data.BrandId))" Text="Upravit značku" Icon="privacy_tip" ButtonStyle="ButtonStyle.Info" />
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Brand" Filterable="false" Width="120px">
+            <Template Context="data">
+                <RadzenButton Click="@(() => DeleteBrand(data))" Text="Smazat značku" Icon="report" ButtonStyle="ButtonStyle.Danger" />
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+
+
+@*<SearchBarComponent OnSearch="HandleSearchByBrand" Placeholder="Filtruj podle jména značky" />
+<div class="row">
+    <div class="col-md-6">
+     <br/>
+        <div>  <a href="brand/Add" class="btn btn-primary">Přidat nový záznam</a></div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Název značky</th>
+                    <th>Logo</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var brand in brand)
+                {
+                    if (brand.BrandLogoId==null) {
+                        <tr>
+                            <td>@brand.BrandName</td>
+                            <td>Logo není přiřazeno</td>
+                            <td>
+                                <a href="brand/edit/@brand.BrandId" class="btn btn-success">Upravit značku</a>
+                            </td>
+                            <td> <button class="btn btn-primary" @onclick="()=>DeleteBrand(brand)">Smazat značku</button></td>
+                        </tr>
+                    }
+                    else{
+                    <tr>
+                            <td>@brand.BrandName</td>
+                            <td>@brand.BrandLogo.BrandLogoName <img src="data:@brand.BrandLogo.MIMEType;base64,@Convert.ToBase64String(brand.BrandLogo.Size)" alt="Brand Logo" /></td>
+                            <td>
+                                <a href="brand/edit/@brand.BrandId" class="btn btn-success">Upravit značku</a>
+                            </td>
+                            <td> <button class="btn btn-primary" @onclick="()=>DeleteBrand(brand)">Smazat značku</button></td>
+
+                        </tr>
+
+                }
+                
+                }
+            </tbody>
+        </table>
+
+       
+    </div>
+</div>*@
